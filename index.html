@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 💖</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a18cd1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.container {
+    width: 92%;
+    max-width: 520px;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+}
+
+/* ENVELOPE */
+.envelope-area {
+    cursor: pointer;
+    transition: 0.6s;
+}
+
+.envelope {
+    width: 280px;
+    height: 190px;
+    margin: auto;
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 15px 35px rgba(0,0,0,.25);
+}
+
+.envelope:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #ffd6e0;
+    clip-path: polygon(0 0, 50% 55%, 100% 0);
+    z-index: 3;
+    transform-origin: top;
+    transition: 0.8s;
+}
+
+.envelope:after {
+    content: "💌";
+    position: absolute;
+    font-size: 55px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.open-text {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    animation: pulse 1.5s infinite;
+}
+
+/* MESSAGE */
+.message {
+    display: none;
+    animation: appear 1s ease forwards;
+}
+
+.message h1 {
+    font-size: clamp(38px, 10vw, 62px);
+    margin: 5px 0;
+    text-shadow: 0 0 10px white, 0 0 25px #ff4f9a;
+    animation: glow 1.8s infinite alternate;
+}
+
+.message h2 {
+    font-size: 25px;
+    margin: 5px 0 18px;
+}
+
+.message p {
+    font-size: 18px;
+    line-height: 1.7;
+    margin: 10px auto 22px;
+}
+
+.cake {
+    font-size: 75px;
+    animation: bounce 1.5s infinite;
+}
+
+button {
+    border: none;
+    border-radius: 30px;
+    padding: 13px 25px;
+    margin: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #d94f8a;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,.2);
+    cursor: pointer;
+    transition: .25s;
+}
+
+button:hover {
+    transform: scale(1.08);
+}
+
+#surprise {
+    display: none;
+    margin-top: 15px;
+    font-size: 19px;
+    font-weight: bold;
+    animation: appear .8s ease;
+}
+
+/* FLOATING HEARTS */
+.heart {
+    position: fixed;
+    bottom: -50px;
+    font-size: 25px;
+    pointer-events: none;
+    animation: floatUp linear forwards;
+    z-index: 1;
+}
+
+/* CONFETTI */
+.confetti {
+    position: fixed;
+    top: -20px;
+    width: 9px;
+    height: 15px;
+    pointer-events: none;
+    z-index: 10;
+    animation: confettiFall linear forwards;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: scale(.6) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 8px white; }
+    to { text-shadow: 0 0 15px white, 0 0 35px #ff4f9a; }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+}
+
+@keyframes pulse {
+    50% { transform: scale(1.05); }
+}
+
+@keyframes floatUp {
+    to {
+        transform: translateY(-115vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes confettiFall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- FIRST SCREEN -->
+    <div class="envelope-area" id="envelopeArea" onclick="openLetter()">
+        <div class="envelope"></div>
+        <div class="open-text">💌 Tap the letter to open 💌</div>
+    </div>
+
+    <!-- BIRTHDAY MESSAGE -->
+    <div class="message" id="message">
+
+        <div class="cake">🎂</div>
+
+        <h1>Happy Birthday!</h1>
+
+        <!-- Change the name here -->
+        <h2>To Someone Special 💖</h2>
+
+        <!-- Change the greeting here -->
+        <p>
+            Wishing you a beautiful birthday filled with
+            happiness, laughter, and unforgettable memories.
+            May this new chapter of your life bring you
+            closer to your dreams. Always remember that
+            you are special, appreciated, and loved. ✨
+        </p>
+
+        <button onclick="celebrate()">🎉 Celebrate!</button>
+        <button onclick="showSurprise()">💌 One More Thing</button>
+
+        <div id="surprise">
+            Whatever happens, I hope you keep smiling. 🌷<br>
+            May your days always have a little more happiness. 💖
+        </div>
+
+    </div>
+</div>
+
+<script>
+function openLetter() {
+    document.getElementById("envelopeArea").style.display = "none";
+    document.getElementById("message").style.display = "block";
+
+    createConfetti(80);
+    playChime();
+}
+
+function celebrate() {
+    createConfetti(120);
+    createHearts(20);
+    playChime();
+}
+
+function showSurprise() {
+    document.getElementById("surprise").style.display = "block";
+    createHearts(12);
+    playChime();
+}
+
+function createConfetti(amount) {
+    for (let i = 0; i < amount; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.animationDuration = (2 + Math.random() * 4) + "s";
+        c.style.animationDelay = Math.random() * 1.5 + "s";
+        c.style.transform = "rotate(" + Math.random() * 360 + "deg)";
+
+        // Let the browser choose the default color.
+        c.style.backgroundColor =
+            ["#ff4f9a", "#ffd166", "#06d6a0", "#4cc9f0", "#ffffff"]
+            [Math.floor(Math.random() * 5)];
+
+        document.body.appendChild(c);
+
+        setTimeout(() => c.remove(), 7000);
+    }
+}
+
+function createHearts(amount) {
+    for (let i = 0; i < amount; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.textContent = ["💖", "💕", "💗", "✨"][Math.floor(Math.random() * 4)];
+
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (3 + Math.random() * 4) + "s";
+        heart.style.animationDelay = Math.random() * 1.5 + "s";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 8000);
+    }
+}
+
+/* Simple birthday chime using the browser's built-in audio system.
+   No music file is needed. */
+function playChime() {
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audio = new AudioContext();
+
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+
+        notes.forEach((frequency, index) => {
+            const oscillator = audio.createOscillator();
+            const gain = audio.createGain();
+
+            oscillator.frequency.value = frequency;
+            oscillator.type = "sine";
+
+            oscillator.connect(gain);
+            gain.connect(audio.destination);
+
+            const start = audio.currentTime + index * 0.16;
+            gain.gain.setValueAtTime(0, start);
+            gain.gain.linearRampToValueAtTime(.12, start + .03);
+            gain.gain.exponentialRampToValueAtTime(.001, start + .35);
+
+            oscillator.start(start);
+            oscillator.stop(start + .4);
+        });
+    } catch (e) {
+        // Audio is optional; the page still works without it.
+    }
+}
+</script>
+
+</body>
+</html>
